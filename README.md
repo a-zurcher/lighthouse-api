@@ -13,10 +13,13 @@ npm run start
 Or use Docker/podman :
 
 ```bash
-podman run 
+podman run -d \
+    --name lighthouse-api\
+     -p 8080:8080 \
+     ghcr.io/a-zurcher/lighthouse-api:latest
 ```
 
-Or use Docker compose (with hot reload, mostly meant to be used for development) :
+Or use Docker compose, which uses hot reload and builds the image. This is mostly meant to be used for development.
 
 ```bash
 docker compose up
