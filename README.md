@@ -7,7 +7,7 @@ lighthouse-api is a lightweight HTTP API for running Google Lighthouse audits as
 
 ## Running it
 
-You can run it with npm directly :
+You can run it with npm directly, this will start the server on port 8080 :
 
 ```bash
 cd app
@@ -20,8 +20,8 @@ Use Docker/podman :
 ```bash
 podman run -d \
     --name lighthouse-api\
-     -p 8080:8080 \
-     ghcr.io/a-zurcher/lighthouse-api:latest
+    -p 8080:8080 \
+    ghcr.io/a-zurcher/lighthouse-api:latest
 ```
 
 Or use Docker compose, which uses hot reload and builds the image. This is mostly meant to be used for development.
@@ -62,35 +62,35 @@ If the analysis job is not finished, the reponse will look like this :
 
 ```json
 {
-	"status": "pending"
+  "status": "pending"
 }
 ```
 
-When the job is finished, the server will answer with a JSON object containing the results :
+When the job is finished, the server will answer with a JSON object containing the following results :
 
 ```json
 {
-	"status": "done",
-	"result": {
-		"performance": {
-			"score": 0.57,
-			"metrics": {
-				"fcp": 0,
-				"lcp": 0.01,
-				"cls": 1,
-				"tbt": 1,
-				"si": 0.18
-			}
-		},
-		"accessibility": {
-			"score": 0.95
-		},
-		"best_practices": {
-			"score": 1
-		},
-		"seo": {
-			"score": 0.93
-		}
-	}
+  "status": "done",
+  "result": {
+    "performance": {
+      "score": 0.75,
+      "metrics": {
+        "fcp": 0,
+      	"lcp": 0.01,
+      	"cls": 1,
+      	"tbt": 1,
+      	"si": 0.18
+      }
+    },
+    "accessibility": {
+      "score": 0.95
+    },
+    "best_practices": {
+      "score": 1
+    },
+    "seo": {
+      "score": 0.93
+    }
+  }
 }
 ```
