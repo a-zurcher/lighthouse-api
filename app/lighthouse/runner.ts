@@ -52,7 +52,7 @@ export async function runLighthouse(options: { url: string, job: string }): Prom
       seo: { score: lhr.categories.seo.score },
     };
 
-    serverLog({ message: `results for ${url} - ` + JSON.stringify(results), job });
+    serverLog({ message: `results for "${url}" - ` + JSON.stringify(results), job });
 
     return results;
     
