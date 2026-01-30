@@ -10,7 +10,7 @@ export function createJob(url: string): string {
   // run asynchronously, detached from request lifecycle
   (async () => {
     try {
-      const result = await runLighthouse(url);
+      const result = await runLighthouse({ url, job: jobId });
       jobs.set(jobId, { status: "done", result });
     } catch (err) {
       jobs.set(jobId, {

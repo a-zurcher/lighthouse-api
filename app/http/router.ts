@@ -15,7 +15,7 @@ async function readJson(req: IncomingMessage): Promise<any> {
 export async function handleRequest(req: IncomingMessage): Promise<HttpResponse> {
   const url = new URL(req.url ?? "/", `http://${req.headers.host}`);
 
-  serverLog(`${req.method} ${req.url}`);
+  serverLog({ message: `${req.method} ${req.url}` });
 
   // POST /run-lighthouse
   if (req.method === "POST" && url.pathname === "/run-lighthouse") {
@@ -30,7 +30,7 @@ export async function handleRequest(req: IncomingMessage): Promise<HttpResponse>
 
     const jobId = createJob(body.url);
 
-    serverLog(`Created job ${jobId} to analyze url "${body.url}"`)
+    serverLog({ message: `Created job ${jobId} to analyze url "${body.url}"` });
 
     return {
       status: 202,

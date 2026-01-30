@@ -1,10 +1,11 @@
 import lighthouse, { type Flags } from "lighthouse";
 import { launch } from "chrome-launcher";
 import type { LighthouseResults } from "./types.ts";
-import { log } from "node:console";
 import { serverLog } from "../logging.ts";
 
-export async function runLighthouse(url: string): Promise<LighthouseResults | null> {
+export async function runLighthouse(options: { url: string, job: string }): Promise<LighthouseResults | null> {
+  const { url, job } = options;
+
   const chrome = await launch({
     chromeFlags: [
       "--headless",
@@ -15,17 +16,21 @@ export async function runLighthouse(url: string): Promise<LighthouseResults | nu
     logLevel: "warn"
   });
 
-  const options: Flags = {
+  const lighthouseOptions: Flags = {
     port: chrome.port,
     logLevel: "warn",
     onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
   };
 
   try {
-    const runnerResult = await lighthouse(url, options);
+    const runnerResult = await lighthouse(url, lighthouseOptions);
 
     if (runnerResult === undefined) {
-      serverLog(`The lighthouse runner returned 'undefined' when trying to analyse url '${url}'`, "ERROR");
+      serverLog({
+        message: `The lighthouse runner returned 'undefined' when trying to analyse url '${url}'`,
+        level: "ERROR", job
+      });
+
       return null;
     }
 
@@ -47,7 +52,7 @@ export async function runLighthouse(url: string): Promise<LighthouseResults | nu
       seo: { score: lhr.categories.seo.score },
     };
 
-    log(`results for ${url} - ` + JSON.stringify(results));
+    serverLog({ message: `results for ${url} - ` + JSON.stringify(results), job });
 
     return results;
     
