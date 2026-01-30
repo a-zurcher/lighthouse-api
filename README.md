@@ -3,7 +3,9 @@
 ![CI status](https://github.com/a-zurcher/lighthouse-api/actions/workflows/main.yml/badge.svg)
 
 
-lighthouse-api is a lightweight HTTP API for running Google Lighthouse audits asynchronously. Submitted URLs return a job ID immediately, while a background worker runs the analysis and stores job state and results in memory. Results can be fetched later via a dedicated endpoint, keeping the API responsive and simple.
+lighthouse-api is a lightweight HTTP API for running [Google Lighthouse](https://github.com/GoogleChrome/lighthouse) audits asynchronously.
+
+Submitted URLs return a job ID immediately, while a background worker runs the analysis and stores job state and results in memory. Results can be fetched later via a dedicated endpoint, keeping the API responsive and simple.
 
 ## Running it
 
@@ -36,19 +38,19 @@ Request a URL to be analyzed :
 
 ```bash
 curl --request POST \
-  --url 'http://localhost:8080/run-lighthouse' \
-  --header 'Content-Type: application/json' \
-  --data '{
-	"url": "https://zurcher.digital/en/"
-  }'
+    --url 'http://localhost:8080/run-lighthouse' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "url": "https://zurcher.digital/en/"
+    }'
 ```
 
 This will immediately return a JSON response like this :
 
 ```json
 {
-	"jobId": "3577aa3c-2364-46ce-b331-a2d59af12698",
-	"resultUrl": "/results/3577aa3c-2364-46ce-b331-a2d59af12698"
+  "jobId": "3577aa3c-2364-46ce-b331-a2d59af12698",
+  "resultUrl": "/results/3577aa3c-2364-46ce-b331-a2d59af12698"
 }
 ```
 
