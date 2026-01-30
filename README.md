@@ -1,5 +1,8 @@
 # lighthouse-api
 
+![CI status](https://github.com/a-zurcher/lighthouse-api/actions/workflows/main.yml/badge.svg)
+
+
 lighthouse-api is a lightweight HTTP API for running Google Lighthouse audits asynchronously. Submitted URLs return a job ID immediately, while a background worker runs the analysis and stores job state and results in memory. Results can be fetched later via a dedicated endpoint, keeping the API responsive and simple.
 
 ## Running it
