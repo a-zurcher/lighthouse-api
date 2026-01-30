@@ -1,0 +1,10 @@
+services:
+  lighthouse-api:
+    build:
+      context: app
+      dockerfile: Containerfile
+    command: ["npm", "run", "dev"]
+    volumes:
+      - ./app:/app
+    ports:
+      - 8081:8080
