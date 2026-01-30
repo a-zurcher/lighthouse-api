@@ -9,7 +9,7 @@ curl --request POST \
   --url 'http://localhost:8080/run-lighthouse' \
   --header 'Content-Type: application/json' \
   --data '{
-	"url": "zurcher.digital"
+	"url": "https://zurcher.digital/en/"
   }'
 ```
 
