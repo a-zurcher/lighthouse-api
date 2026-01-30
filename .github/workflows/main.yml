@@ -27,13 +27,15 @@ jobs:
           VERSION=$(jq -r '.version' app/package.json)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Check if git tag already exists
-        id: tag_check
+      - name: Check if container image tag already exists
+        id: image_check
         run: |
           TAG="${{ steps.version.outputs.version }}"
-          if git rev-parse "refs/tags/$TAG" >/dev/null 2>&1; then
+          IMAGE="ghcr.io/a-zurcher/lighthouse-api:$TAG"
+      
+          if docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
-            echo "Tag $TAG already exists — exiting"
+            echo "Image $IMAGE already exists — exiting"
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
