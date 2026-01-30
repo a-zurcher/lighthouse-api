@@ -1,5 +1,27 @@
 # lighthouse-api
 
+## Running it
+
+You can either run it with npm directly :
+
+```bash
+cd app
+npm i
+npm run start
+```
+
+Or use Docker/podman :
+
+```bash
+podman run 
+```
+
+Or use Docker compose (with hot reload, mostly meant to be used for development) :
+
+```bash
+docker compose up
+```
+
 ## Usage
 
 Request a URL to be analyzed :
