@@ -61,14 +61,3 @@ jobs:
             ghcr.io/a-zurcher/lighthouse-api:${{ steps.version.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Create git tag
-        uses: actions/github-script@v5
-        with:
-          script: |
-            await github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "refs/tags/${{ steps.version.outputs.version }}",
-              sha: context.sha
-            })
