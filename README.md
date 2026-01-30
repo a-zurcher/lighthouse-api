@@ -1,8 +1,10 @@
 # lighthouse-api
 
+lighthouse-api is a lightweight HTTP API for running Google Lighthouse audits asynchronously. Submitted URLs return a job ID immediately, while a background worker runs the analysis and stores job state and results in memory. Results can be fetched later via a dedicated endpoint, keeping the API responsive and simple.
+
 ## Running it
 
-You can either run it with npm directly :
+You can run it with npm directly :
 
 ```bash
 cd app
@@ -10,7 +12,7 @@ npm i
 npm run start
 ```
 
-Or use Docker/podman :
+Use Docker/podman :
 
 ```bash
 podman run -d \
