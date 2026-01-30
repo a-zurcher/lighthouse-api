@@ -21,7 +21,7 @@ Use Docker/podman :
 
 ```bash
 podman run -d \
-    --name lighthouse-api\
+    --name lighthouse-api \
     -p 8080:8080 \
     ghcr.io/a-zurcher/lighthouse-api:latest
 ```
