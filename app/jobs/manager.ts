@@ -1,9 +1,11 @@
 import { randomUUID } from "node:crypto";
-import { jobs } from "./store.ts";
+import { jobs, setJobIsRunning } from "./store.ts";
 import { runLighthouse } from "../lighthouse/runner.ts";
 
 export function createJob(url: string): string {
   const jobId = randomUUID();
+  
+  setJobIsRunning(true);
 
   jobs.set(jobId, { status: "pending" });
 
@@ -17,6 +19,8 @@ export function createJob(url: string): string {
         status: "error",
         error: err instanceof Error ? err.message : "Unknown error",
       });
+    } finally {
+      setJobIsRunning(false);
     }
   })();
 

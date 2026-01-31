@@ -1,16 +1,14 @@
 {
   "name": "lighthouse-api",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "dev": "nodemon main.ts",
     "start": "node main.ts"
   },
   "dependencies": {
-    "chrome-launcher": "^1.1.0",
-    "express": "^4.19.2",
-    "lighthouse": "^11.0.0",
-    "uuid": "^9.0.1"
+    "chrome-launcher": "^1.2.1",
+    "lighthouse": "^13.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11",

@@ -1,4 +1,4 @@
-export type JobStatus = "pending" | "done" | "error";
+export type JobStatus = "pending" | "done" | "error" | "rejected";
 
 export type Job = {
   status: JobStatus;

@@ -2,6 +2,7 @@ import type { IncomingMessage } from "node:http";
 import { createJob, getJob } from "../jobs/manager.ts";
 import type { HttpResponse } from "./types.ts";
 import { serverLog } from "../logging.ts";
+import { jobIsRunning } from "../jobs/store.ts";
 
 async function readJson(req: IncomingMessage): Promise<any> {
   let data = "";
@@ -19,6 +20,13 @@ export async function handleRequest(req: IncomingMessage): Promise<HttpResponse>
 
   // POST /run-lighthouse
   if (req.method === "POST" && url.pathname === "/run-lighthouse") {
+    if (jobIsRunning) return {
+      status: 503, // service unavailable
+      body: JSON.stringify({
+        error: "A job is currently running, try again later"
+      })
+    }
+
     const body = await readJson(req);
 
     if (!body?.url) {
