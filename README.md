@@ -32,6 +32,12 @@ Or use Docker compose, which uses hot reload and builds the image. This is mostl
 docker compose up
 ```
 
+## Environmental variables
+
+You can configure the API behavior by setting the following environmental variables :
+
+- `MAX_JOBS` (integer, defaults to `1`) - the maximum number of jobs the API will process concurrently.
+
 ## Usage
 
 Request a URL to be analyzed :

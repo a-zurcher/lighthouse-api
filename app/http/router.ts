@@ -2,7 +2,6 @@ import type { IncomingMessage } from "node:http";
 import { createJob, getJob } from "../jobs/manager.ts";
 import type { HttpResponse } from "./types.ts";
 import { serverLog } from "../logging.ts";
-import { jobIsRunning } from "../jobs/store.ts";
 
 async function readJson(req: IncomingMessage): Promise<any> {
   let data = "";
@@ -20,15 +19,8 @@ export async function handleRequest(req: IncomingMessage): Promise<HttpResponse>
 
   // POST /run-lighthouse
   if (req.method === "POST" && url.pathname === "/run-lighthouse") {
-    if (jobIsRunning) return {
-      status: 503, // service unavailable
-      body: JSON.stringify({
-        error: "A job is currently running, try again later"
-      })
-    }
-
+    // payload validation
     const body = await readJson(req);
-
     if (!body?.url) {
       return {
         status: 400,
@@ -36,17 +28,30 @@ export async function handleRequest(req: IncomingMessage): Promise<HttpResponse>
       };
     }
 
-    const jobId = createJob(body.url);
+    // tries to create job
+    const createJobResponse = createJob(body.url);
 
-    serverLog({ message: `Created job ${jobId} to analyze url "${body.url}"` });
+    // manages response if job was accepted or not
+    if (createJobResponse.accepted) {
+      serverLog({ message: `Created job ${createJobResponse.jobId} to analyze url "${body.url}"` });
+    
+      return {
+        status: 202,
+        body: JSON.stringify({
+          jobId: createJobResponse.jobId,
+          resultUrl: `/results/${createJobResponse.jobId}`,
+        }),
+      };
+    } else {
+      serverLog({ message: `Rejecting request to analyze "${body.url}" - ${createJobResponse.message}` });
 
-    return {
-      status: 202,
-      body: JSON.stringify({
-        jobId,
-        resultUrl: `/results/${jobId}`,
-      }),
-    };
+      return {
+        status: 503, // service unavailable
+        body: JSON.stringify({
+          error: createJobResponse.message
+        })
+      };
+    }
   }
 
   // GET /results/:jobId

@@ -5,3 +5,9 @@ export type Job = {
   result?: any;
   error?: string;
 };
+
+export type CreateJobResponse = {
+  accepted: boolean;
+  message: string;
+  jobId: string;
+};

@@ -1,12 +1,19 @@
 import { randomUUID } from "node:crypto";
-import { jobs, setJobIsRunning } from "./store.ts";
+import { jobs, jobsRunning, decreaseJobCount, MAX_JOBS, increaseJobCount } from "./store.ts";
 import { runLighthouse } from "../lighthouse/runner.ts";
+import { type CreateJobResponse } from "./types.ts";
 
-export function createJob(url: string): string {
+export function createJob(url: string): CreateJobResponse {
   const jobId = randomUUID();
-  
-  setJobIsRunning(true);
 
+  if (jobsRunning >= MAX_JOBS) {
+    return {
+      accepted: false,
+      message: `Job adding request rejected - ${jobsRunning} job(s) out of the maximum allowed ${MAX_JOBS} job(s) are running.`,
+      jobId
+    };
+  }  
+  
   jobs.set(jobId, { status: "pending" });
 
   // run asynchronously, detached from request lifecycle
@@ -20,11 +27,16 @@ export function createJob(url: string): string {
         error: err instanceof Error ? err.message : "Unknown error",
       });
     } finally {
-      setJobIsRunning(false);
+      decreaseJobCount();
     }
   })();
 
-  return jobId;
+  increaseJobCount();
+  return {
+      accepted: true,
+      message: `Added new job successfully - ${jobs} job(s) out of the maximum ${MAX_JOBS} job(s) are running.`,
+      jobId
+  };
 }
 
 export function getJob(jobId: string) {
