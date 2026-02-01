@@ -54,7 +54,6 @@ curl --request POST \
 If no jobs are currently runnng, this will immediately return a JSON response like this :
 
 ```json
-// no job running
 {
   "jobId": "3577aa3c-2364-46ce-b331-a2d59af12698",
   "resultUrl": "/results/3577aa3c-2364-46ce-b331-a2d59af12698"
