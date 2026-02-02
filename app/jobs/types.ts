@@ -1,10 +1,11 @@
-export type JobStatus = "pending" | "done" | "error" | "rejected";
+import type { LighthouseResults } from "../lighthouse/types.ts";
 
-export type Job = {
-  status: JobStatus;
-  result?: any;
-  error?: string;
-};
+export type JobStatus = "pending" | "done" | "error";
+
+export type Job = 
+  { status: "pending" } |
+  { status: "done", result: LighthouseResults } |
+  { status: "error", error: string };
 
 export type CreateJobResponse = {
   accepted: boolean;

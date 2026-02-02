@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { jobs, jobsRunning, decreaseJobCount, increaseJobCount } from "./store.ts";
 import { runLighthouse } from "../lighthouse/runner.ts";
-import { type CreateJobResponse } from "./types.ts";
+import { type CreateJobResponse, type Job, type JobStatus } from "./types.ts";
 import { MAX_JOBS } from "../envs.ts";
 
 export function createJob(url: string): CreateJobResponse {
@@ -20,13 +20,15 @@ export function createJob(url: string): CreateJobResponse {
   // run asynchronously, detached from request lifecycle
   (async () => {
     try {
-      const result = await runLighthouse({ url, job: jobId });
-      jobs.set(jobId, { status: "done", result });
+      const lighthouseResults = await runLighthouse({ url, job: jobId });
+      jobs.set(jobId, { status: "done", result: lighthouseResults });
+
     } catch (err) {
       jobs.set(jobId, {
         status: "error",
         error: err instanceof Error ? err.message : "Unknown error",
       });
+
     } finally {
       decreaseJobCount();
     }
@@ -35,11 +37,11 @@ export function createJob(url: string): CreateJobResponse {
   increaseJobCount();
   return {
       accepted: true,
-      message: `Added new job successfully - ${jobs} job(s) out of the maximum ${MAX_JOBS} job(s) are running.`,
+      message: `Added new job successfully - ${jobs.size} job(s) out of the maximum ${MAX_JOBS} job(s) are running.`,
       jobId
   };
 }
 
-export function getJob(jobId: string) {
+export function getJob(jobId: string): Job {
   return jobs.get(jobId);
 }
