@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { jobs, jobsRunning, decreaseJobCount, MAX_JOBS, increaseJobCount } from "./store.ts";
+import { jobs, jobsRunning, decreaseJobCount, increaseJobCount } from "./store.ts";
 import { runLighthouse } from "../lighthouse/runner.ts";
 import { type CreateJobResponse } from "./types.ts";
+import { MAX_JOBS } from "../envs.ts";
 
 export function createJob(url: string): CreateJobResponse {
   const jobId = randomUUID();

@@ -1,6 +1,7 @@
 import { handleRequest } from "./router.ts";
 import { serverLog } from "../logging.ts";
 import * as http from "node:http";
+import { getConfigDisplay } from "../envs.ts";
 
 export function startServer(port = 8000) {
   const server = http.createServer(async (req, res) => {
@@ -20,6 +21,8 @@ export function startServer(port = 8000) {
   });
 
   server.listen(port, () => {
-    serverLog({ message: `🚀 Lighthouse API listening on http://localhost:${port}` });
+    serverLog({ 
+      message: `Server is now listening on http://0.0.0.0:${port} with the following options : ${getConfigDisplay()}`
+    });
   });
 }
