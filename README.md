@@ -87,8 +87,8 @@ curl --request POST \
     "resultEndpoint": "/results/3577aa3c-2364-46ce-b331-a2d59af12698"
   }
   ```
-
-> The `resultEndpoint` can be queried using the [GET `/results/[jobId]`](#get-resultsjobid) endpoint to track the job status or fetch results.
+  
+  > The `resultEndpoint` can be queried using the [GET `/results/[jobId]`](#get-resultsjobid) endpoint to track the job status or fetch results.
 
 - **`503 Service Unavailable`** - The maximum number of concurrent jobs has been reached:
 
