@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+    "module": "node20",
+    "types": ["node"]
   }
 }
