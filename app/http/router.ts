@@ -39,7 +39,7 @@ export async function handleRequest(req: IncomingMessage): Promise<HttpResponse>
         status: 202,
         body: JSON.stringify({
           jobId: createJobResponse.jobId,
-          resultUrl: `/results/${createJobResponse.jobId}`,
+          resultEndpoint: `/results/${createJobResponse.jobId}`,
         }),
       };
     } else {
@@ -66,10 +66,18 @@ export async function handleRequest(req: IncomingMessage): Promise<HttpResponse>
       };
     }
 
-    return {
-      status: 200,
-      body: JSON.stringify(job),
+    let httpCode: number;
+
+    switch (job.status) {
+      case "done": httpCode = 200; break;
+      case "error": httpCode = 500; break;
+      case "pending": httpCode = 202; break;
     };
+
+    return {
+      status: httpCode,
+      body: JSON.stringify(job)
+    }
   }
 
   return { status: 404, body: "Not found" };
