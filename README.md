@@ -9,7 +9,7 @@ Submitted URLs return a job ID immediately, while a background worker runs the a
 
 ## Running it
 
-You can run it with npm directly, this will start the server on port 8080 :
+To run this directly with npm, ensure you are using [Node.js v22.18.0](https://nodejs.org/en/learn/typescript/run-natively) or later, as the project runs TypeScript natively without a transpilation step. This will start the server on port 8080 :
 
 ```bash
 cd app
@@ -20,17 +20,23 @@ npm run start
 Use Docker/podman :
 
 ```bash
+# production
 podman run -d \
-    --name lighthouse-api \
-    -p 8080:8080 \
-    ghcr.io/a-zurcher/lighthouse-api:latest
+  --name lighthouse-api \
+  -p 8080:8080 \
+  ghcr.io/a-zurcher/lighthouse-api:latest
+
+# dev, with hot-reload using nodemon
+podman run \
+  --name lighthouse-api \
+  -p 8080:8080 \
+  -e NODE_ENV=development \
+  -v "$(pwd)/app:/app:Z" \
+  --rm \
+  ghcr.io/a-zurcher/lighthouse-api:latest \
+  sh -c "npm ci && npm run dev" # install devDependencies
 ```
 
-Or use Docker compose, which uses hot reload and builds the image. This is mostly meant to be used for development.
-
-```bash
-docker compose up
-```
 
 ## Environmental variables
 
