@@ -5,7 +5,7 @@ WORKDIR /app
 # Install dependencies
 RUN apk add chromium-chromedriver chromium
 
-COPY package*.json ./
+COPY app/package*.json ./
 
 ENV CHROME_BIN=/usr/bin/chromium-browser \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
@@ -15,7 +15,7 @@ ENV CHROME_BIN=/usr/bin/chromium-browser \
 
 RUN npm ci --omit=dev --ignore-scripts
 
-COPY . /app
+COPY ./app ./
 
 EXPOSE 8080
 

@@ -62,8 +62,8 @@ jobs:
         if: steps.image_check.outputs.tag_doesnt_exist == 'true'
         uses: docker/build-push-action@v6
         with:
-          context: ./app
-          file: ./app/Containerfile
+          context: .
+          file: ./Containerfile
           push: true
           platforms: linux/amd64
           tags: |
